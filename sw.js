@@ -1,4 +1,4 @@
-// Cambias "v1" por "v2"
+// Service Worker v2 para AgroRed
 const CACHE_NAME = "agrored-v2";
 
 const ASSETS_TO_CACHE = [
@@ -16,6 +16,23 @@ self.addEventListener("install", e => {
             return cache.addAll(ASSETS_TO_CACHE);
         })
     );
+    self.skipWaiting();
+});
+
+// Activación: Limpieza de cachés antiguas (v1)
+self.addEventListener("activate", e => {
+    e.waitUntil(
+        caches.keys().then(keys => {
+            return Promise.all(
+                keys.map(key => {
+                    if (key !== CACHE_NAME) {
+                        return caches.delete(key);
+                    }
+                })
+            );
+        })
+    );
+    self.clients.claim();
 });
 
 // Interceptación de peticiones para modo Offline
@@ -26,4 +43,3 @@ self.addEventListener("fetch", e => {
         })
     );
 });
-      
