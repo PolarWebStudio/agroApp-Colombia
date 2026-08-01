@@ -1,0 +1,179 @@
+<!doctype html>
+<html lang="es">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="theme-color" content="#2e7d32" />
+        <title>AgroRed Colombia - Herramientas del Campo</title>
+        <link rel="stylesheet" href="style.css" />
+        <link rel="manifest" href="manifest.json" />
+    </head>
+    <body>
+        <header class="navbar">
+            <h1>🌾 AgroRed</h1>
+            <div style="display: flex; align-items: center; gap: 8px">
+                <button
+                    id="theme-toggle"
+                    onclick="toggleTheme()"
+                    style="
+                        background: rgba(255, 255, 255, 0.2);
+                        border: 1px solid rgba(255, 255, 255, 0.5);
+                        color: white;
+                        padding: 4px 10px;
+                        border-radius: 6px;
+                        cursor: pointer;
+                        font-size: 1rem;
+                    "
+                    >🌙</button
+                >
+                <span id="status-badge" class="badge online">En línea</span>
+            </div>
+        </header>
+
+        <main class="container">
+            <!-- Pestañas de navegación -->
+            <nav class="tabs">
+                <button
+                    class="tab-btn active"
+                    onclick="switchTab('calculadora')"
+                    >🧮 Calculadora</button
+                >
+                <button class="tab-btn" onclick="switchTab('precios')"
+                    >📊 Precios Plaza</button
+                >
+                <button class="tab-btn" onclick="switchTab('notas')"
+                    >📝 Mis Cosechas</button
+                >
+            </nav>
+
+            <!-- Seccion 1: Calculadora de Márgenes y Costos -->
+            <section id="tab-calculadora" class="tab-content active">
+                <h2>Calculadora de Venta de Cosecha</h2>
+                <p class="subtitle"
+                    >Calcula cuánto te queda libre antes de negociar con el
+                    intermediario.</p
+                >
+
+                <form id="calc-form">
+                    <div class="form-group">
+                        <label for="producto">Producto / Cultivo:</label>
+                        <input
+                            type="text"
+                            id="producto"
+                            placeholder="Ej: Café, Yuca, Plátano, Maíz"
+                            required
+                        />
+                    </div>
+
+                    <div class="form-group">
+                        <label for="cantidad"
+                            >Cantidad a vender (Kilos / Bultos):</label
+                        >
+                        <input
+                            type="text"
+                            id="cantidad"
+                            placeholder="Ej: 500 o 1.500"
+                            oninput="formatearMiles(this)"
+                            required
+                        />
+                    </div>
+
+                    <div class="form-group">
+                        <label for="costo-total"
+                            >Costo total de producción (COP $):</label
+                        >
+                        <input
+                            type="text"
+                            id="costo-total"
+                            placeholder="Ej: 3.000.000"
+                            oninput="formatearMiles(this)"
+                            required
+                        />
+                    </div>
+
+                    <div class="form-group">
+                        <label for="precio-oferta"
+                            >Precio offered por unidad (COP $):</label
+                        >
+                        <input
+                            type="text"
+                            id="precio-oferta"
+                            placeholder="Ej: 75.000"
+                            oninput="formatearMiles(this)"
+                            required
+                        />
+                    </div>
+
+                    <button
+                        type="button"
+                        class="btn-primary"
+                        onclick="calcularGanancia()"
+                        >Calcular Margen Real</button
+                    >
+                </form>
+
+                <div id="resultado-calc" class="result-card hidden">
+                    <!-- Se llena dinámicamente con JS -->
+                </div>
+            </section>
+
+            <!-- Seccion 2: Precios de referencia de Mercado -->
+            <section id="tab-precios" class="tab-content">
+                <h2>Precios de Referencia (Plazas)</h2>
+                <p class="subtitle"
+                    >Precios actualizados de referencia para consultar sin
+                    conexión.</p
+                >
+
+                <div
+                    class="filter-box"
+                    style="display: flex; gap: 8px; margin-bottom: 12px"
+                >
+                    <input
+                        type="text"
+                        id="search-precio"
+                        placeholder="Buscar producto..."
+                        onkeyup="filtrarPrecios()"
+                        style="flex: 1"
+                    />
+                    <button
+                        class="btn-primary"
+                        onclick="agregarPrecioNuevo()"
+                        style="width: auto; padding: 0 16px"
+                        >+ Agregar</button
+                    >
+                </div>
+
+                <ul id="lista-precios" class="price-list">
+                    <!-- Carga dinámica -->
+                </ul>
+            </section>
+
+            <!-- Seccion 3: Notas de Cosecha -->
+            <section id="tab-notas" class="tab-content">
+                <h2>Registro de Siembras y Cosechas</h2>
+                <div class="form-group">
+                    <input
+                        type="text"
+                        id="nota-input"
+                        placeholder="Ej: Lote 2 abonado hoy con bultos de urea..."
+                    />
+                    <button class="btn-secondary" onclick="guardarNota()"
+                        >Guardar Nota</button
+                    >
+                </div>
+                <ul id="lista-notas" class="notes-list"></ul>
+            </section>
+        </main>
+
+        <script src="app.js"></script>
+        <script>
+            if ("serviceWorker" in navigator) {
+                window.addEventListener("load", () => {
+                    navigator.serviceWorker.register("sw.js");
+                });
+            }
+        </script>
+    </body>
+</html>
+
