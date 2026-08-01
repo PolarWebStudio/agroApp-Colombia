@@ -22,7 +22,7 @@ function cargarTemaGuardado() {
 }
 
 // --- MANEJO DE PESTAÑAS ---
-function switchTab(tabId) {
+function switchTab(tabId, eventObj) {
     document
         .querySelectorAll(".tab-content")
         .forEach(el => el.classList.remove("active"));
@@ -30,9 +30,12 @@ function switchTab(tabId) {
         .querySelectorAll(".tab-btn")
         .forEach(el => el.classList.remove("active"));
 
-    document.getElementById(`tab-${tabId}`).classList.add("active");
-    if (window.event && window.event.target) {
-        window.event.target.classList.add("active");
+    const targetContent = document.getElementById(`tab-${tabId}`);
+    if (targetContent) targetContent.classList.add("active");
+
+    const e = eventObj || window.event;
+    if (e && e.target) {
+        e.target.classList.add("active");
     }
 }
 
@@ -284,4 +287,3 @@ document.addEventListener("DOMContentLoaded", () => {
     cargarPrecios();
     cargarNotas();
 });
-
