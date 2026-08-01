@@ -166,6 +166,56 @@
             </section>
         </main>
 
+        <!-- Pie de Página y Apoyo Voluntario -->
+        <footer
+            class="footer-support"
+            style="
+                margin-top: 40px;
+                padding: 20px;
+                border-top: 1px solid #e0e0e0;
+                text-align: center;
+                background-color: rgba(0, 0, 0, 0.02);
+            "
+        >
+            <div class="support-box">
+                <p style="margin-bottom: 8px"
+                    ><strong>¿Te sirvió esta herramienta?</strong> Considera
+                    apoyar este proyecto para seguir desarrollando soluciones
+                    gratuitas para el campo.</p
+                >
+                <div class="payment-methods" style="margin-bottom: 12px">
+                    <p style="margin: 0">
+                        <strong>Cuenta de Ahorros Davivienda:</strong><br />
+                        <code
+                            style="
+                                background: #eef2f5;
+                                padding: 4px 8px;
+                                border-radius: 4px;
+                                display: inline-block;
+                                margin-top: 4px;
+                            "
+                            >0550488423200937</code
+                        ><br />
+                        <small>A nombre de Carlos López</small>
+                    </p>
+                </div>
+                <button
+                    class="btn btn-secondary"
+                    onclick="copySupportNumber('0550488423200937')"
+                    style="padding: 8px 16px; cursor: pointer"
+                >
+                    📋 Copiar Número de Cuenta
+                </button>
+            </div>
+
+            <div style="margin-top: 20px; font-size: 0.85rem; color: #666666">
+                <p
+                    >© 2026 Polar Web Studio | Herramientas Digitales e
+                    Inclusivas</p
+                >
+            </div>
+        </footer>
+
         <script src="app.js"></script>
         <script>
             if ("serviceWorker" in navigator) {
@@ -174,6 +224,31 @@
                 });
             }
         </script>
+        <script>
+            function copySupportNumber(accountNumber) {
+                if (navigator.clipboard && navigator.clipboard.writeText) {
+                    navigator.clipboard
+                        .writeText(accountNumber)
+                        .then(function () {
+                            alert(
+                                "¡Número de cuenta copiado al portapapeles: " +
+                                    accountNumber +
+                                    "!"
+                            );
+                        })
+                        .catch(function () {
+                            prompt(
+                                "Copia manualmente el número de cuenta:",
+                                accountNumber
+                            );
+                        });
+                } else {
+                    prompt(
+                        "Copia manualmente el número de cuenta:",
+                        accountNumber
+                    );
+                }
+            }
+        </script>
     </body>
 </html>
-
